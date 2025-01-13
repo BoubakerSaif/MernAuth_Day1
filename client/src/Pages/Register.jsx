@@ -1,4 +1,32 @@
+import { useState } from "react";
+import { singUp } from "../Redux/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 const Register = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [user, setUser] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    age: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const formHanlder = (e) => {
+    setUser({ ...user, [e.target.name]: e.target.value });
+  };
+  const { createdUser } = useSelector((state) => state.user);
+  const { password, confirmPassword } = user;
+  const registerHandler = (e) => {
+    e.preventDefault();
+    if (password === confirmPassword) {
+      dispatch(singUp(user));
+    }
+  };
+  if (createdUser) {
+    navigate("/");
+  }
   return (
     <div>
       <div className="min-h-screen flex items-center justify-center w-full dark:bg-gray-950">
@@ -6,12 +34,14 @@ const Register = () => {
           <h1 className="text-2xl font-bold text-center mb-4 dark:text-gray-200">
             Welcome !
           </h1>
-          <form>
+          <form onSubmit={registerHandler}>
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 FirstName
               </label>
               <input
+                onChange={formHanlder}
+                name="firstName"
                 type="text"
                 placeholder="your firstName"
                 className="shadow-sm rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
@@ -23,6 +53,8 @@ const Register = () => {
                 lastName
               </label>
               <input
+                onChange={formHanlder}
+                name="lastName"
                 type="text"
                 placeholder="your lastName"
                 className="shadow-sm rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
@@ -34,6 +66,8 @@ const Register = () => {
                 Email Address
               </label>
               <input
+                onChange={formHanlder}
+                name="email"
                 type="email"
                 className="shadow-sm rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                 placeholder="your@email.com"
@@ -45,6 +79,8 @@ const Register = () => {
                 Age
               </label>
               <input
+                onChange={formHanlder}
+                name="age"
                 type="text"
                 className="shadow-sm rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                 placeholder="your Age"
@@ -52,16 +88,28 @@ const Register = () => {
               />
             </div>
             <div className="mb-4">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-              >
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Password
               </label>
               <input
+                onChange={formHanlder}
+                name="password"
                 type="password"
                 className="shadow-sm rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                 placeholder="Enter your password"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                ConfirmPassword
+              </label>
+              <input
+                onChange={formHanlder}
+                name="confirmPassword"
+                type="password"
+                className="shadow-sm rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                placeholder="Enter your password again"
                 required
               />
             </div>

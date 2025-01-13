@@ -1,4 +1,27 @@
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { singIn } from "../Redux/userSlice";
+
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
+  const formHandler = (e) => {
+    setUser({ ...user, [e.target.name]: e.target.value });
+  };
+  const { loggedInUser } = useSelector((state) => state.user);
+  const loginHandler = (e) => {
+    e.preventDefault();
+    dispatch(singIn(user));
+  };
+
+  if (loggedInUser) {
+    navigate("/");
+  }
   return (
     <div>
       <div className="min-h-screen flex items-center justify-center w-full dark:bg-gray-950">
@@ -6,12 +29,14 @@ const Login = () => {
           <h1 className="text-2xl font-bold text-center mb-4 dark:text-gray-200">
             Welcome Back !
           </h1>
-          <form>
+          <form onSubmit={loginHandler}>
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Email Address
               </label>
               <input
+                onChange={formHandler}
+                name="email"
                 type="email"
                 className="shadow-sm rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                 placeholder="your@email.com"
@@ -26,6 +51,8 @@ const Login = () => {
                 Password
               </label>
               <input
+                onChange={formHandler}
+                name="password"
                 type="password"
                 className="shadow-sm rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                 placeholder="Enter your password"
