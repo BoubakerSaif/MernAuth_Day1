@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { singIn } from "../Redux/userSlice";
 
@@ -13,15 +13,11 @@ const Login = () => {
   const formHandler = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
-  const { loggedInUser } = useSelector((state) => state.user);
   const loginHandler = (e) => {
     e.preventDefault();
-    dispatch(singIn(user));
+    dispatch(singIn({ user, navigate }));
   };
 
-  if (loggedInUser) {
-    navigate("/");
-  }
   return (
     <div>
       <div className="min-h-screen flex items-center justify-center w-full dark:bg-gray-950">

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { singUp } from "../Redux/userSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 const Register = () => {
   const dispatch = useDispatch();
@@ -16,17 +16,14 @@ const Register = () => {
   const formHanlder = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
-  const { createdUser } = useSelector((state) => state.user);
   const { password, confirmPassword } = user;
   const registerHandler = (e) => {
     e.preventDefault();
     if (password === confirmPassword) {
-      dispatch(singUp(user));
+      dispatch(singUp({ user, navigate }));
     }
   };
-  if (createdUser) {
-    navigate("/");
-  }
+
   return (
     <div>
       <div className="min-h-screen flex items-center justify-center w-full dark:bg-gray-950">

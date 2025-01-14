@@ -1,26 +1,44 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { setCredentials } from "./authSlice";
 
-export const singUp = createAsyncThunk("user/signup", async (user) => {
-  try {
-    const { data } = await axios.post("http://localhost:5000/api/users", user);
-    return data;
-  } catch (error) {
-    console.log(error);
+export const singUp = createAsyncThunk(
+  "user/signup",
+  async ({ user, navigate }) => {
+    axios.defaults.withCredentials = true;
+    try {
+      const { data } = await axios.post(
+        "http://localhost:5000/api/users",
+        user
+      );
+      if (data) {
+        navigate("/");
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
   }
-});
+);
 
-export const singIn = createAsyncThunk("user/signin", async (user) => {
-  try {
-    const { data } = await axios.post(
-      "http://localhost:5000/api/users/auth",
-      user
-    );
-    return data;
-  } catch (error) {
-    console.log(error);
+export const singIn = createAsyncThunk(
+  "user/signin",
+  async ({ user, navigate }, { dispatch }) => {
+    try {
+      const { data } = await axios.post(
+        "http://localhost:5000/api/users/auth",
+        user
+      );
+      dispatch(setCredentials(data));
+      if (data) {
+        navigate("/");
+      }
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
   }
-});
+);
 
 const userSlice = createSlice({
   name: "user",

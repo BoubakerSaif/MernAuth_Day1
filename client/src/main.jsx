@@ -7,9 +7,11 @@ import Login from "./Pages/Login.jsx";
 import Home from "./Pages/Home.jsx";
 import store from "./Redux/store.js";
 import { Provider } from "react-redux";
+import Navbar from "./Components/Navbar.jsx";
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <Provider store={store}>
+      <Navbar />
       <Routes>
         <Route path="/" element={<App />}>
           <Route index={true} path="/" element={<Home />} />
