@@ -22,13 +22,16 @@ const registerUser = asyncHandler(async (req, res) => {
       photo,
       password,
     });
-    res.status(201).json({
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      age: user.age,
-      photo: user.photo,
-    });
+    if (user) {
+      generateToken(res, user._id);
+      res.status(201).json({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        age: user.age,
+        photo: user.photo,
+      });
+    }
   } catch (error) {
     throw new Error(error);
   }
@@ -68,4 +71,28 @@ const logoutuser = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "User Logged Out" });
 });
 
-export { registerUser, authUser, logoutuser };
+// *desc Update user
+// route PUT /api/users
+// @access Private
+
+const updateUser = asyncHandler(async (req, res) => {
+  const { firstName, lastName, email, age, password, photo } = req.body;
+  try {
+    const user = await User.findById(req.user._id);
+    if (user) {
+      user.firstName = firstName || user.firstName;
+      user.lastName = lastName || user.lastName;
+      user.email = email || user.email;
+      user.age = age || user.age;
+      user.password = password || user.password;
+      user.photo = photo || user.photo;
+      const updatedUser = await user.save();
+      res.status(200).json(updatedUser);
+    }
+  } catch (error) {
+    res.status(401);
+    throw new Error(error);
+  }
+});
+
+export { registerUser, authUser, logoutuser, updateUser };

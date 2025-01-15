@@ -4,6 +4,7 @@ import connectDB from "./Config/db.js";
 import userRoutes from "./Routes/userRoutes.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import postRoutes from "./Routes/postRoutes.js";
 const app = express();
 dotenv.config();
 connectDB();
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use("/api/users", userRoutes);
+app.use("/api/posts", postRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on ${PORT}`);
