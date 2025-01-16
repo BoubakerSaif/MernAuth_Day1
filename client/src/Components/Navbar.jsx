@@ -1,9 +1,16 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { clearCredentials } from "../Redux/authSlice";
+import { logoutUser } from "../Redux/userSlice";
 
 const Navbar = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const logoutHandler = (e) => {
+    e.preventDefault();
+    dispatch(logoutUser(navigate));
+    dispatch(clearCredentials());
+  };
   const { userInfo } = useSelector((state) => state.auth);
   return (
     <div className="top-0 py-1 lg:py-2 w-full bg-transparent lg:relative z-50 dark:bg-gray-900">
@@ -12,7 +19,7 @@ const Navbar = () => {
           <button>
             <div className="flex items-center space-x-2">
               <h2 className="text-black dark:text-white font-bold text-2xl">
-                MernAuth
+                Blog
               </h2>
             </div>
           </button>
@@ -25,14 +32,15 @@ const Navbar = () => {
           </div>
           {userInfo ? (
             <div className="flex items-center gap-x-2">
-              <p className="flex items-center text-black dark:text-white justify-center px-6 py-2.5 font-semibold">
+              <Link
+                to={"/profile"}
+                className="flex items-center text-black dark:text-white justify-center px-6 py-2.5 font-semibold"
+              >
                 {`${userInfo.firstName.toUpperCase()} ${userInfo.lastName.toUpperCase()}`}
-              </p>
+              </Link>
 
               <button
-                onClick={() => {
-                  dispatch(clearCredentials());
-                }}
+                onClick={logoutHandler}
                 className="flex items-center justify-center rounded-md bg-[#4A3BFF] text-white px-6 py-2.5 font-semibold hover:shadow-lg hover:drop-shadow transition duration-200"
               >
                 Logout

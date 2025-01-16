@@ -8,15 +8,19 @@ import Home from "./Pages/Home.jsx";
 import store from "./Redux/store.js";
 import { Provider } from "react-redux";
 import Navbar from "./Components/Navbar.jsx";
+import UpdateProfile from "./Pages/UpdateProfile.jsx";
+import { ToastContainer } from "react-toastify";
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <Provider store={store}>
       <Navbar />
+      <ToastContainer />
       <Routes>
         <Route path="/" element={<App />}>
           <Route index={true} path="/" element={<Home />} />
           <Route path="signup" element={<Register />} />
           <Route path="signin" element={<Login />} />
+          <Route path="profile" element={<UpdateProfile />} />
         </Route>
       </Routes>
     </Provider>
