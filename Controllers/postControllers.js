@@ -6,7 +6,19 @@ import Post from "../Model/postModel.js";
 // @access Private
 
 const createPost = asyncHandler(async (req, res) => {
-  res.send("Create Post");
+  const { title, description, photo } = req.body;
+  try {
+    const post = await Post.create({
+      title,
+      description,
+      photo,
+      createdBy: req.user._id,
+    });
+    res.status(201).json(post);
+  } catch (error) {
+    res.status(401);
+    throw new Error(error);
+  }
 });
 
 // *desc get All Posts
@@ -14,7 +26,13 @@ const createPost = asyncHandler(async (req, res) => {
 // @access Public
 
 const getPosts = asyncHandler(async (req, res) => {
-  res.send("get All Posts");
+  try {
+    const posts = await Post.find().populate("createdBy");
+    res.status(200).json(posts);
+  } catch (error) {
+    res.status(401);
+    throw new Error(error);
+  }
 });
 
 // *desc Update Post

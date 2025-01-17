@@ -28,6 +28,11 @@ const Navbar = () => {
               <li className="hover:underline hover:underline-offset-4 hover:w-fit transition-all duration-100 ease-linear">
                 <Link to={"/"}>Home</Link>
               </li>
+              {userInfo && (
+                <li className="hover:underline hover:underline-offset-4 hover:w-fit transition-all duration-100 ease-linear">
+                  <Link to={"/createpost"}>Create Post</Link>
+                </li>
+              )}
             </ul>
           </div>
           {userInfo ? (

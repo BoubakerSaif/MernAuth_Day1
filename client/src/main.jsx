@@ -10,6 +10,7 @@ import { Provider } from "react-redux";
 import Navbar from "./Components/Navbar.jsx";
 import UpdateProfile from "./Pages/UpdateProfile.jsx";
 import { ToastContainer } from "react-toastify";
+import CreatePost from "./Pages/CreatePost.jsx";
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <Provider store={store}>
@@ -21,6 +22,7 @@ createRoot(document.getElementById("root")).render(
           <Route path="signup" element={<Register />} />
           <Route path="signin" element={<Login />} />
           <Route path="profile" element={<UpdateProfile />} />
+          <Route path="createpost" element={<CreatePost />} />
         </Route>
       </Routes>
     </Provider>

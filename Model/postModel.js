@@ -8,6 +8,10 @@ const postSchema = mongoose.Schema({
     default:
       "https://hips.hearstapps.com/hmg-prod/images/champagne-beach-espiritu-santo-island-vanuatu-royalty-free-image-1655672510.jpg",
   },
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 
 const Post = mongoose.model("Post", postSchema);
